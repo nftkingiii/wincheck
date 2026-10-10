@@ -129,7 +129,9 @@ def prepare(case: Case, workdir: Path) -> Project:
     if base.exists():
         shutil.rmtree(base, onerror=_force_remove)
     base.mkdir(parents=True)
-    _run(["git", "clone", "--quiet", "--filter=blob:none", f"https://github.com/{case.repo}.git", str(src)], workdir)
+    # Full clone, not blobless: on the Windows runner, git failed to fetch the fix
+    # commit's test files on demand when they were overlaid.
+    _run(["git", "clone", "--quiet", f"https://github.com/{case.repo}.git", str(src)], workdir)
     git(src, "checkout", "--quiet", f"{case.fix}^")
     # Agents commit nothing; this just makes `git diff` meaningful and quiet.
     git(src, "config", "user.email", "wincheck@localhost")

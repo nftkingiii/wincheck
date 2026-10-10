@@ -1,0 +1,81 @@
+name: wincheck
+
+# Manual runs only: no pull_request trigger, so code from forks never runs
+# next to the API keys.
+on:
+  workflow_dispatch:
+    inputs:
+      case:
+        description: Eval case (see `python -m wincheck cases`)
+        required: true
+        default: click-3277
+        type: choice
+        options:
+          - click-3277
+          - tox-3222
+          - click-tempfile-pager
+          - pytest-pathlib
+          - tox-str-convert
+          - build-env
+      mode:
+        description: baseline = check the case is valid on Windows (no model calls); agent = run and score the agent
+        required: true
+        default: baseline
+        type: choice
+        options: [baseline, agent]
+      held_out:
+        description: Allow scoring a held-out case
+        type: boolean
+        default: false
+      effort:
+        description: Model effort
+        type: choice
+        default: high
+        options: [medium, high, xhigh, max]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wincheck-${{ inputs.case }}
+  cancel-in-progress: false
+
+jobs:
+  eval:
+    runs-on: windows-latest
+    timeout-minutes: 90
+    env:
+      PYTHONIOENCODING: utf-8
+      WINCHECK_WORKDIR: C:\wc
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install wincheck
+        run: |
+          git config --global core.longpaths true
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+      - name: Run
+        shell: pwsh
+        env:
+          ANTHROPIC_API_KEY: ${{ inputs.mode == 'agent' && secrets.ANTHROPIC_API_KEY || '' }}
+          NEATLOGS_API_KEY: ${{ secrets.NEATLOGS_API_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+          CASE: ${{ inputs.case }}
+          MODE: ${{ inputs.mode }}
+          HELD_OUT: ${{ inputs.held_out }}
+          EFFORT: ${{ inputs.effort }}
+        run: |
+          $wargs = @("eval", $env:CASE, "--runs", "runs", "--effort", $env:EFFORT)
+          if ($env:MODE -eq "baseline") { $wargs += "--baseline-only" }
+          if ($env:HELD_OUT -eq "true") { $wargs += "--held-out" }
+          python -m wincheck @wargs
+      - name: Upload run
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wincheck-${{ inputs.case }}-${{ inputs.mode }}-${{ github.run_id }}
+          path: runs/
+          if-no-files-found: warn

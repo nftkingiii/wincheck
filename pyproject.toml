@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wincheck"
+version = "0.1.0"
+description = "An agent that reproduces, fixes and verifies Windows-specific bugs in Python projects"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "anthropic>=1.13",
+    "neatlogs>=1.4.26",
+]
+
+[project.scripts]
+wincheck = "wincheck.cli:main"
+
+[tool.setuptools]
+packages = ["wincheck"]

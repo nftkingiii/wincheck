@@ -1,0 +1,12 @@
+New task: add two evidence sections that the hackathon checklist asks for. Start a fresh branch from the latest origin/main (restart claude/gifted-cerf-lirfct).
+In docs/evidence.md, add these right after "Agent results":
+1. "## Before and after": a table comparing two click-3277 agent runs on the same bug. The change between them was PR #3, which steers the agent toward root-cause fixes through existing code paths.
+Before (run 38110138668): failed. Fixed the symptom with a new _echo_lf helper that bypassed click.echo. 14 turns, 88.3 s agent time, 5,391 output tokens.
+After (run 38112253078): passed. 81.1 s agent time, 6,278 output tokens.
+Add a second comparison: neatlogs tracing before PR #13 (one eval run became 4 separate traces) vs after (one wincheck_eval trace with everything nested inside it, run 38120573968).
+2. "## A failed action and what the agent did next": from the tox-str-convert run (run 38117085629; its artifact has transcript.jsonl):
+The agent ran pytest tests/config. Collection crashed with ModuleNotFoundError: No module named 'argcomplete'.
+Next turn, it re-ran with --ignore=tests/config/cli/test_argcomplete.py.
+That run showed failures in test_cli_ini.py. The agent then ran git stash on its change and re-ran those tests, to check whether the failures existed before its fix.
+Also name the harness-level example: the first pytest-pathlib run (run 38117084071) was rejected by the baseline gate before any model call, and it was fixed in PR #8 (target-count fix).
+Keep the wording plain. Commit with a natural message and no co-author trailer. Bundle the new checkpoint as before, scan it, push, open a PR, and don't merge. Reply with the PR link, the checkpoint ID and the scan counts.

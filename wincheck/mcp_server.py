@@ -33,7 +33,7 @@ def _home() -> Path:
 
 
 def _last_json(stdout: str) -> Any:
-    """The CLI prints log lines and then one indented JSON object; return that object."""
+    """The CLI prints log lines, one indented JSON object, then possibly more log lines; return the object."""
     if stdout.startswith("{\n"):
         start = 0
     else:
@@ -41,7 +41,7 @@ def _last_json(stdout: str) -> Any:
         if start == 0:
             return None
     try:
-        return json.loads(stdout[start:])
+        return json.JSONDecoder().raw_decode(stdout[start:])[0]
     except json.JSONDecodeError:
         return None
 

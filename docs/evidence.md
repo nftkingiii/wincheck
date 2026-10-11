@@ -6,11 +6,14 @@ What each claim rests on. Every entry links to something a reviewer can open.
 | Date | What | Evidence |
 |---|---|---|
 | 2026-10-11 | Agent runs export traces (`neatlogs export on` in the log) | [run 38112274222](https://github.com/nftkingiii/wincheck/actions/runs/38112274222) |
+| 2026-10-11 | Each eval run is one trace (wincheck_eval → prepare_project, baseline, wincheck_run with read/reproduce/fix phases, score) | [run 38120573968](https://github.com/nftkingiii/wincheck/actions/runs/38120573968) |
 
 ## Entire (checkpoints, graph)
 | Date | What | Evidence |
 |---|---|---|
 | 2026-10-11 | First public checkpoint (01M4MT8VXPQRMM5SF9FWS0H8XE): README results section | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
+| 2026-10-11 | Checkpoint 01M4MVMWV80NVTQG1FRX2K6YCB: README Partner tools section | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
+| 2026-10-11 | Checkpoint 01M4MW81P89C81Z8V9TPERQMZH: one neatlogs trace per eval run | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 
 ## cfo.ai (business plan)
 | Date | What | Evidence |
@@ -35,3 +38,4 @@ What each claim rests on. Every entry links to something a reviewer can open.
 | 2026-10-11 | tox-3222 baseline (Windows), after the target fix in PR #8 | [valid](https://github.com/nftkingiii/wincheck/actions/runs/38117352662) |
 | 2026-10-11 | tox-str-convert agent (held out, written bug report) | [failed: 18/20 targets (single-quoted UNC paths still collapse) and 2 regressions (UNC paths quoted mid-argument)](https://github.com/nftkingiii/wincheck/actions/runs/38117085629) |
 | 2026-10-11 | build-env agent (held out, written bug report) | [**passed**, agent time 347 s](https://github.com/nftkingiii/wincheck/actions/runs/38117086919) |
+| 2026-10-11 | pytest-pathlib agent (held out), re-run with one trace per run | [**passed**](https://github.com/nftkingiii/wincheck/actions/runs/38120573968) |

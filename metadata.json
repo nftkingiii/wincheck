@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4MW81P89C81Z8V9TPERQMZH",
+  "strategy": "manual-commit",
+  "branch": "claude/gifted-cerf-lirfct",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "wincheck/evals.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 10,
+    "cache_creation_tokens": 3754,
+    "cache_read_tokens": 694342,
+    "output_tokens": 1803,
+    "api_call_count": 5
+  }
+}

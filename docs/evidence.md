@@ -17,6 +17,8 @@ What each claim rests on. Every entry links to something a reviewer can open.
 | 2026-10-11 | Checkpoint 01M4NY9M8KY269DEEQSYES5J4Q: before-and-after and failed-action evidence | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 | 2026-10-11 | Checkpoint 01M4PDB1Y3B7EDXGJX5NYMC9HY: MCP server | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 | 2026-10-11 | Checkpoint 01M4PDBKFPYB54GN93ZE6MKFWC: Try it yourself section | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
+| 2026-10-11 | Checkpoint 01M4PEB0J3JVHJKH3M5MXKFBT9: harness test suite | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
+| 2026-10-11 | Checkpoint 01M4PEBK08DQQS2AVDA33NEGC5: tests in CI on Windows and Linux | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 
 ## cfo.ai (business plan)
 | Date | What | Evidence |
@@ -70,3 +72,18 @@ From the tox-str-convert run ([38117085629](https://github.com/nftkingiii/winche
 3. That run showed failures in `test_cli_ini.py`. The agent ran `git stash` on its change and re-ran those tests, to check whether the failures were there before its fix.
 
 A failure at the harness level: the first pytest-pathlib run ([38117084071](https://github.com/nftkingiii/wincheck/actions/runs/38117084071)) was rejected by the baseline gate before any model call, because the harness counted an inner pytest's temp-dir test as a second target. PR #8 fixed the target count, and the next run [passed](https://github.com/nftkingiii/wincheck/actions/runs/38117351420).
+
+## Harness tests
+27 tests in `tests/`, with no network and no API key. CI runs them on windows-latest and ubuntu-latest ([run 38177162062](https://github.com/nftkingiii/wincheck/actions/runs/38177162062)).
+
+They cover:
+- phase gates: nothing is written while reading, only test files in reproduce, only non-test files in fix, and no paths outside the project
+- secret scrubbing: API keys and tokens never reach the project under test
+- pytest parsing: per-test outcomes from the summary, including Windows backslash ids
+- the PR #8 target count: an inner pytest's temp-dir tests are not counted
+- MCP output parsing: the CLI's JSON is read even with the neatlogs log line after it
+- 6 scripted end-to-end runs of the real agent loop: fixed, fix before reproduction (refused), passing reproduction (rejected), give up (no patch), a fix that doesn't work (unverified), and a test rewritten through the shell in the fix phase (restored)
+
+Gate check: disabling each gate makes at least one test fail.
+
+Known limitation: a parametrized test id that contains " - " is cut off by `parse_summary`.

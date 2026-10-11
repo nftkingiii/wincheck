@@ -25,3 +25,6 @@ packages = ["wincheck"]
 
 [tool.setuptools.package-data]
 wincheck = ["issues/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

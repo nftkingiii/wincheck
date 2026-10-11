@@ -43,8 +43,8 @@ class ToolError(Exception):
 
 
 # Never hand these to the project under test: its code and the model's commands run there.
-SECRET_VARS = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "NEATLOGS_API_KEY", "GITHUB_TOKEN", "GH_TOKEN",
-               "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_SESSION_TOKEN")
+SECRET_VARS = ("ANTHROPIC_API_KEY", "WINCHECK_ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "NEATLOGS_API_KEY",
+               "GITHUB_TOKEN", "GH_TOKEN", "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_SESSION_TOKEN")
 
 
 def scrub(env: dict[str, str]) -> dict[str, str]:

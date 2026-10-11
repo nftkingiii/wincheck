@@ -18,6 +18,7 @@ What each claim rests on. Every entry links to something a reviewer can open.
 | 2026-10-11 | Prices clear 70% margin: $49 per fix (96.9%), $199/month team plan (92.5%), $29 extra fix (94.8%) | [summary PDF](business/wincheck-financial-plan.pdf), page 1 |
 | 2026-10-11 | Break-even: 1 team covers running costs, 23 cover founder pay, 56 cover founder pay plus a contract engineer | [summary PDF](business/wincheck-financial-plan.pdf), page 2 |
 | 2026-10-11 | September 2027 base case: 30 paying repos, $5,970/month revenue, $4,938 peak funding need; Downside needs $17,500 | [summary PDF](business/wincheck-financial-plan.pdf), pages 1 and 3 |
+| 2026-10-11 | Full live model export: assumptions, monthly forecast, scenario comparison, early-hire stress tests | [workbook](business/wincheck-12-month-plan.xlsx) |
 
 ## Agent results
 | Date | Run | Result |
@@ -28,3 +29,7 @@ What each claim rests on. Every entry links to something a reviewer can open.
 | 2026-10-11 | click-3277 agent, after PR #3 | [**passed**](https://github.com/nftkingiii/wincheck/actions/runs/38112253078) |
 | 2026-10-11 | tox-3222 agent, after PR #3 | [failed: 1/6 targets (kept an escape rule upstream changed)](https://github.com/nftkingiii/wincheck/actions/runs/38112263577) |
 | 2026-10-11 | click-tempfile-pager agent (held out), after PR #3 | [**passed**](https://github.com/nftkingiii/wincheck/actions/runs/38112274222) |
+| 2026-10-11 | pytest-pathlib agent (held out), first try | [not run: the harness counted an inner pytest's temp-dir test as a second target, so the case was rejected before the agent started (no model calls)](https://github.com/nftkingiii/wincheck/actions/runs/38117084071) |
+| 2026-10-11 | pytest-pathlib agent (held out), after the target fix in PR #8 | [**passed** in 66 s, 9 turns](https://github.com/nftkingiii/wincheck/actions/runs/38117351420) |
+| 2026-10-11 | tox-3222 baseline (Windows), after the target fix in PR #8 | [valid](https://github.com/nftkingiii/wincheck/actions/runs/38117352662) |
+| 2026-10-11 | tox-str-convert agent (held out, written bug report) | [failed: 18/20 targets (single-quoted UNC paths still collapse) and 2 regressions (UNC paths quoted mid-argument)](https://github.com/nftkingiii/wincheck/actions/runs/38117085629) |

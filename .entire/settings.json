@@ -4,5 +4,12 @@
     "primary": {
       "type": "git-refs"
     }
+  },
+  "redaction": {
+    "pii": {
+      "enabled": true,
+      "email": true,
+      "phone": true
+    }
   }
 }

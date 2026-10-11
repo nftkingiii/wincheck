@@ -20,7 +20,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from . import tracing
-from .pytest_run import run_pytest
+from .pytest_run import normalize_id, run_pytest
 from .tools import is_test_path, scrub, venv_python
 
 
@@ -170,11 +170,19 @@ def _excluded(case: Case, test_id: str) -> bool:
     return any(x in test_id for x in case.exclude)
 
 
+def _counted(p: Project, test_id: str) -> bool:
+    """Only the case's own test files count. Suites that test pytest itself run
+    an inner pytest whose summary lines (for tests in temp dirs) end up in the
+    captured output."""
+    path = normalize_id(test_id).partition("::")[0]
+    return path in {f.replace("\\", "/") for f in p.test_files} and not _excluded(p.case, test_id)
+
+
 def run_maintainer_tests(p: Project) -> dict[str, str]:
     """Overlay the maintainers' test files from the fix commit and run them."""
     git(p.src, "checkout", p.case.fix, "--", *p.test_files)
     res = run_pytest(p.python, p.src, p.test_files, env=p.env)
-    return {k: v for k, v in res.outcomes.items() if not _excluded(p.case, k)}
+    return {k: v for k, v in res.outcomes.items() if _counted(p, k)}
 
 
 def restore_test_files(p: Project) -> None:
@@ -215,7 +223,7 @@ def baseline(p: Project, check_fix: bool = False) -> Baseline:
     if check_fix:
         git(p.src, "checkout", "--quiet", p.case.fix)
         res = run_pytest(p.python, p.src, p.test_files, env=p.env)
-        b.after = {k: v for k, v in res.outcomes.items() if not _excluded(p.case, k)}
+        b.after = {k: v for k, v in res.outcomes.items() if _counted(p, k)}
         git(p.src, "checkout", "--quiet", f"{p.case.fix}^")
         not_passing = [t for t in targets if b.after.get(t) != "PASSED"]
         if not_passing:

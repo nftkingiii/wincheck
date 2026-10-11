@@ -10,6 +10,7 @@ reproduction, nothing outside the test files can be changed.
 from __future__ import annotations
 
 import json
+import os
 import platform
 import subprocess
 import sys
@@ -25,6 +26,13 @@ from .pytest_run import clip, run_pytest
 from .tools import FIX, READ, REPRODUCE, TOOL_SPECS, ToolError, Workspace, build_dispatch, is_test_path, validate_input
 
 MODEL = "claude-opus-5-5"
+# Hosts that reserve ANTHROPIC_API_KEY for their own login (Claude Code cloud
+# sessions) may not pass it through, so the agent also accepts its own name.
+API_KEY_VARS = ("ANTHROPIC_API_KEY", "WINCHECK_ANTHROPIC_API_KEY")
+
+
+def api_key() -> str | None:
+    return next((os.environ[v] for v in API_KEY_VARS if os.environ.get(v)), None)
 SPECS_BY_NAME = {s["name"]: s for s in TOOL_SPECS}
 
 SYSTEM = """You are Wincheck, an engineer who fixes Windows-specific bugs in Python projects.
@@ -75,7 +83,7 @@ class Agent:
         self.effort = effort
         self.max_turns = max_turns_per_phase
         self.max_fix_attempts = max_fix_attempts
-        self.client = client or anthropic.Anthropic(max_retries=4)
+        self.client = client or anthropic.Anthropic(api_key=api_key(), max_retries=4)
         self.tools = build_dispatch(ws)
         self.messages: list[dict[str, Any]] = []
         self.result = AgentResult()

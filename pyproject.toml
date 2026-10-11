@@ -13,8 +13,12 @@ dependencies = [
     "neatlogs>=1.4.26",
 ]
 
+[project.optional-dependencies]
+mcp = ["mcp>=1.2,<2"]
+
 [project.scripts]
 wincheck = "wincheck.cli:main"
+wincheck-mcp = "wincheck.mcp_server:main"
 
 [tool.setuptools]
 packages = ["wincheck"]

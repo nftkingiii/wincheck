@@ -54,6 +54,51 @@ Latest agent run for each case on `windows-latest`. Every run, with links to its
 - **Entire**: commits carry `Entire-Checkpoint` trailers. The first public checkpoint is [`01M4MT8VXPQRMM5SF9FWS0H8XE`](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a). Cloud sessions can't push `refs/entire/*`, so [`entire-import.yml`](.github/workflows/entire-import.yml) publishes checkpoints from a git bundle.
 - **cfo.ai**: a 12-month plan built from measured run costs. $49 per fix and a $199/month team plan both clear a 70% margin, and 23 paying repos cover founder pay. See the [summary PDF](docs/business/wincheck-financial-plan.pdf) and the [workbook](docs/business/wincheck-12-month-plan.xlsx).
 
+## Try it yourself
+
+**Easiest: on GitHub's Windows runners**
+
+1. Fork this repo.
+2. In your fork, go to Settings → Secrets and variables → Actions and add `ANTHROPIC_API_KEY` (and optionally `NEATLOGS_API_KEY`).
+3. Open the Actions tab (enable workflows if GitHub asks), pick "wincheck" and click Run workflow.
+4. Pick a case and a mode. `baseline` only checks that the bug reproduces on Windows and needs no API key; `agent` runs and scores the agent. Held-out cases also need the "held out" box ticked.
+
+**On a Windows machine**
+
+```
+pip install -e .
+python -m wincheck cases
+python -m wincheck eval click-3277 --baseline-only   # no API key needed
+python -m wincheck eval click-3277                   # needs ANTHROPIC_API_KEY
+```
+
+**From Claude (MCP)**
+
+```
+pip install -e ".[mcp]"
+claude mcp add wincheck -- wincheck-mcp
+```
+
+For Claude Desktop, add this to `claude_desktop_config.json` (use the full path to `wincheck-mcp` if it isn't on your PATH):
+
+```json
+{
+  "mcpServers": {
+    "wincheck": {
+      "command": "wincheck-mcp",
+      "env": { "ANTHROPIC_API_KEY": "sk-ant-..." }
+    }
+  }
+}
+```
+
+Runs are written under `WINCHECK_HOME` (default `~/wincheck`). The tools:
+
+- `list_cases`: the six cases, with split (dev or held_out) and upstream repo@commit.
+- `check_case(case)`: checks that the bug reproduces on this machine. No model calls.
+- `run_case(case, effort="high", held_out=False)`: runs the agent and scores it. Needs `ANTHROPIC_API_KEY`.
+- `fix_issue(repo_path, issue_text, python_path=None)`: runs the agent on your own checkout and bug report.
+
 ## Windows runner
 
 The runs happen on GitHub Actions `windows-latest` (`.github/workflows/wincheck.yml`). The workflow can only be started by hand. Its API keys come from repository secrets (`ANTHROPIC_API_KEY`, `NEATLOGS_API_KEY`), and the run directory is uploaded as an artifact.

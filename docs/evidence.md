@@ -15,6 +15,8 @@ What each claim rests on. Every entry links to something a reviewer can open.
 | 2026-10-11 | Checkpoint 01M4MVMWV80NVTQG1FRX2K6YCB: README Partner tools section | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 | 2026-10-11 | Checkpoint 01M4MW81P89C81Z8V9TPERQMZH: one neatlogs trace per eval run | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 | 2026-10-11 | Checkpoint 01M4NY9M8KY269DEEQSYES5J4Q: before-and-after and failed-action evidence | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
+| 2026-10-11 | Checkpoint 01M4PDB1Y3B7EDXGJX5NYMC9HY: MCP server | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
+| 2026-10-11 | Checkpoint 01M4PDBKFPYB54GN93ZE6MKFWC: Try it yourself section | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 
 ## cfo.ai (business plan)
 | Date | What | Evidence |

@@ -33,3 +33,4 @@ What each claim rests on. Every entry links to something a reviewer can open.
 | 2026-10-11 | pytest-pathlib agent (held out), after the target fix in PR #8 | [**passed** in 66 s, 9 turns](https://github.com/nftkingiii/wincheck/actions/runs/38117351420) |
 | 2026-10-11 | tox-3222 baseline (Windows), after the target fix in PR #8 | [valid](https://github.com/nftkingiii/wincheck/actions/runs/38117352662) |
 | 2026-10-11 | tox-str-convert agent (held out, written bug report) | [failed: 18/20 targets (single-quoted UNC paths still collapse) and 2 regressions (UNC paths quoted mid-argument)](https://github.com/nftkingiii/wincheck/actions/runs/38117085629) |
+| 2026-10-11 | build-env agent (held out, written bug report) | [**passed**, agent time 347 s](https://github.com/nftkingiii/wincheck/actions/runs/38117086919) |

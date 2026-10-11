@@ -19,6 +19,7 @@ What each claim rests on. Every entry links to something a reviewer can open.
 | 2026-10-11 | Checkpoint 01M4PDBKFPYB54GN93ZE6MKFWC: Try it yourself section | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 | 2026-10-11 | Checkpoint 01M4PEB0J3JVHJKH3M5MXKFBT9: harness test suite | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 | 2026-10-11 | Checkpoint 01M4PEBK08DQQS2AVDA33NEGC5: tests in CI on Windows and Linux | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
+| 2026-10-11 | Checkpoint 01M4PFMASFHS68B4H0V4QYVN9M: consistency runs | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 
 ## cfo.ai (business plan)
 | Date | What | Evidence |
@@ -63,6 +64,18 @@ neatlogs tracing, before and after PR #13:
 |---|---|---|
 | Traces per eval run | 4 separate traces (prepare_project, baseline, wincheck_run, score) | 1 `wincheck_eval` trace with everything nested inside it |
 | Run | [38117085629](https://github.com/nftkingiii/wincheck/actions/runs/38117085629) (tox-str-convert) | [38120573968](https://github.com/nftkingiii/wincheck/actions/runs/38120573968) |
+
+## Consistency
+The same case run several times on the current code, at the same effort (high), on windows-latest.
+
+| Case | Runs | Passed |
+|---|---|---|
+| pytest-pathlib (held out) | [38120573968](https://github.com/nftkingiii/wincheck/actions/runs/38120573968), [38177852877](https://github.com/nftkingiii/wincheck/actions/runs/38177852877), [38178190257](https://github.com/nftkingiii/wincheck/actions/runs/38178190257) | 3 of 3 |
+| click-3277 | [38112253078](https://github.com/nftkingiii/wincheck/actions/runs/38112253078), [38177854663](https://github.com/nftkingiii/wincheck/actions/runs/38177854663), [38178191532](https://github.com/nftkingiii/wincheck/actions/runs/38178191532) | 2 of 3 |
+
+The click-3277 failure ([38178191532](https://github.com/nftkingiii/wincheck/actions/runs/38178191532)): the agent's own reproduction passed and it reported the bug as fixed, but the maintainers' target test `test_source_uses_lf_line_endings` still failed. It had added a new helper, `_echo_shell_output`, rather than fixing the existing path. That is the failure mode PR #3 reduced but didn't remove.
+
+Cost: the four extra runs cost about $0.80 in total on Opus 5.5 (about $0.14 for pytest-pathlib and $0.23–0.29 for click-3277), worked out from the token usage each run reports.
 
 ## A failed action and what the agent did next
 From the tox-str-convert run ([38117085629](https://github.com/nftkingiii/wincheck/actions/runs/38117085629); the run's artifact has `transcript.jsonl`):

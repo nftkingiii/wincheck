@@ -47,8 +47,9 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.cmd != "eval" or not args.baseline_only:
-        if not os.environ.get("ANTHROPIC_API_KEY"):
-            print("ANTHROPIC_API_KEY is not set", file=sys.stderr)
+        from .agent import api_key
+        if not api_key():
+            print("Set ANTHROPIC_API_KEY (or WINCHECK_ANTHROPIC_API_KEY)", file=sys.stderr)
             return 2
 
     exporting = tracing.init(workflow_name="wincheck", tags=[args.cmd, getattr(args, "case", "local")])

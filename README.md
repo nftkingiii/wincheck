@@ -46,6 +46,12 @@ Latest agent run for each case on `windows-latest`. Every run, with links to its
 
 4 of 6 cases pass, including 3 of the 4 held-out ones.
 
+## Partner tools
+
+- **neatlogs**: every run is one trace. The run is a workflow span, each phase an agent span, and each tool call and harness check a tool span. The Anthropic calls are instrumented too. Runs are listed in [docs/evidence.md](docs/evidence.md).
+- **Entire**: commits carry `Entire-Checkpoint` trailers. The first public checkpoint is [`01M4MT8VXPQRMM5SF9FWS0H8XE`](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a). Cloud sessions can't push `refs/entire/*`, so [`entire-import.yml`](.github/workflows/entire-import.yml) publishes checkpoints from a git bundle.
+- **cfo.ai**: a 12-month plan built from measured run costs. $49 per fix and a $199/month team plan both clear a 70% margin, and 23 paying repos cover founder pay. See the [summary PDF](docs/business/wincheck-financial-plan.pdf) and the [workbook](docs/business/wincheck-12-month-plan.xlsx).
+
 ## Windows runner
 
 The runs happen on GitHub Actions `windows-latest` (`.github/workflows/wincheck.yml`). The workflow can only be started by hand. Its API keys come from repository secrets (`ANTHROPIC_API_KEY`, `NEATLOGS_API_KEY`), and the run directory is uploaded as an artifact.

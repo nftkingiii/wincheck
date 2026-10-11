@@ -14,6 +14,10 @@ What each claim rests on. Every entry links to something a reviewer can open.
 ## cfo.ai (business plan)
 | Date | What | Evidence |
 |---|---|---|
+| 2026-10-11 | 12-month plan (Oct 2026 to Sep 2027) built by cfo.ai's Ari from measured run costs ($1.50 per successful fix, cautious) | [summary PDF](business/wincheck-financial-plan.pdf) |
+| 2026-10-11 | Prices clear 70% margin: $49 per fix (96.9%), $199/month team plan (92.5%), $29 extra fix (94.8%) | [summary PDF](business/wincheck-financial-plan.pdf), page 1 |
+| 2026-10-11 | Break-even: 1 team covers running costs, 23 cover founder pay, 56 cover founder pay plus a contract engineer | [summary PDF](business/wincheck-financial-plan.pdf), page 2 |
+| 2026-10-11 | September 2027 base case: 30 paying repos, $5,970/month revenue, $4,938 peak funding need; Downside needs $17,500 | [summary PDF](business/wincheck-financial-plan.pdf), pages 1 and 3 |
 
 ## Agent results
 | Date | Run | Result |

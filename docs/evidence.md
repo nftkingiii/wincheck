@@ -29,3 +29,7 @@ What each claim rests on. Every entry links to something a reviewer can open.
 | 2026-10-11 | click-3277 agent, after PR #3 | [**passed**](https://github.com/nftkingiii/wincheck/actions/runs/38112253078) |
 | 2026-10-11 | tox-3222 agent, after PR #3 | [failed: 1/6 targets (kept an escape rule upstream changed)](https://github.com/nftkingiii/wincheck/actions/runs/38112263577) |
 | 2026-10-11 | click-tempfile-pager agent (held out), after PR #3 | [**passed**](https://github.com/nftkingiii/wincheck/actions/runs/38112274222) |
+| 2026-10-11 | pytest-pathlib agent (held out), first try | [not run: the harness counted an inner pytest's temp-dir test as a second target, so the case was rejected before the agent started (no model calls)](https://github.com/nftkingiii/wincheck/actions/runs/38117084071) |
+| 2026-10-11 | pytest-pathlib agent (held out), after the target fix in PR #8 | [**passed** in 66 s, 9 turns](https://github.com/nftkingiii/wincheck/actions/runs/38117351420) |
+| 2026-10-11 | tox-3222 baseline (Windows), after the target fix in PR #8 | [valid](https://github.com/nftkingiii/wincheck/actions/runs/38117352662) |
+| 2026-10-11 | tox-str-convert agent (held out, written bug report) | [failed: 18/20 targets, 2 regressions (single-quoted UNC paths, and quoted `\\\\` inside an argument)](https://github.com/nftkingiii/wincheck/actions/runs/38117085629) |

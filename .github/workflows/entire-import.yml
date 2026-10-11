@@ -10,6 +10,10 @@ on:
         description: Path of the git bundle on the selected branch
         required: true
         default: entire-checkpoints.bundle
+      from_branch:
+        description: Branch that holds the bundle (empty = the branch this runs on)
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -24,7 +28,13 @@ jobs:
       - name: Push checkpoint refs from the bundle
         env:
           BUNDLE: ${{ inputs.bundle }}
+          FROM_BRANCH: ${{ inputs.from_branch }}
         run: |
+          if [ -n "$FROM_BRANCH" ]; then
+            git fetch origin "refs/heads/$FROM_BRANCH"
+            git show "FETCH_HEAD:$BUNDLE" > "$RUNNER_TEMP/checkpoints.bundle"
+            BUNDLE="$RUNNER_TEMP/checkpoints.bundle"
+          fi
           git bundle verify "$BUNDLE"
           refs=$(git bundle list-heads "$BUNDLE" | awk '{print $2}')
           echo "$refs"

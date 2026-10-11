@@ -1,0 +1,17 @@
+New task: make Wincheck easy for judges to try. Restart claude/gifted-cerf-lirfct from the latest origin/main.
+1. MCP server: wincheck/mcp_server.py
+Use the official mcp Python SDK (FastMCP).
+Add it as an optional extra in pyproject.toml: [project.optional-dependencies] mcp = ["mcp>=1.2"].
+Add a console script: wincheck-mcp = "wincheck.mcp_server:main". Keep mcp out of the core dependencies.
+Tools (each runs sys.executable -m wincheck ... in a subprocess, so nothing prints to the MCP stdout; return the parsed JSON plus the exit code):
+list_cases(): the 6 cases, with name, split (dev/held_out) and upstream repo@commit.
+check_case(case): eval CASE --baseline-only. No model calls; it checks whether the bug reproduces on this machine.
+run_case(case, effort="high", held_out=False): full agent run and score. Needs ANTHROPIC_API_KEY. Pass --held-out only if held_out is true.
+fix_issue(repo_path, issue_text, python_path=None): writes the issue to a temp file and runs wincheck run.
+Use a long subprocess timeout (60 min), and return stderr's last 40 lines on failure.
+Test it: start the server with the mcp stdio client in Python, list the tools, call list_cases, and call run_case without an API key to confirm it fails cleanly with exit code 2. Report the results.
+2. README: add a "Try it yourself" section after Partner tools
+Easiest, on GitHub's Windows runners: fork the repo → Settings → Secrets and variables → Actions → add ANTHROPIC_API_KEY (and optionally NEATLOGS_API_KEY) → Actions tab → "wincheck" → Run workflow → pick a case and mode. Mention baseline mode needs no key.
+On a Windows machine: pip install -e ., then python -m wincheck cases, python -m wincheck eval click-3277 --baseline-only, then python -m wincheck eval click-3277.
+From Claude (MCP): pip install -e ".[mcp]", then the Claude Code command claude mcp add wincheck -- wincheck-mcp, and the matching Claude Desktop JSON config snippet. List the four tools in one line each.
+Commit the two parts separately, with natural messages and no co-author trailer. Bundle only the new checkpoints (a bundle can hold several refs), scan them as before, push, open a PR, and don't merge. Reply with the PR link, the checkpoint IDs, the test results and the scan counts.

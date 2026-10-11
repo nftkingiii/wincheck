@@ -1,0 +1,52 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4PDB1Y3B7EDXGJX5NYMC9HY",
+  "session_id": "06c56b38-4221-5994-b5c1-a8a55c86ae0a",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T21:19:16.462755973Z",
+  "branch": "claude/gifted-cerf-lirfct",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "wincheck/mcp_server.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "ba0eb4c96aac",
+  "checkpoint_transcript_start": 538,
+  "transcript_lines_at_start": 538,
+  "compact_transcript_start": 98,
+  "token_usage": {
+    "input_tokens": 14,
+    "cache_creation_tokens": 175588,
+    "cache_read_tokens": 1320840,
+    "output_tokens": 5687,
+    "api_call_count": 7
+  },
+  "session_metrics": {
+    "turn_count": 12
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-11T21:19:16.404328701Z",
+    "agent_lines": 116,
+    "agent_removed": 0,
+    "human_added": 4,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 120,
+    "total_lines_changed": 120,
+    "agent_percentage": 96.66666666666667,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 7,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 7
+      }
+    }
+  ]
+}

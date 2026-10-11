@@ -1,0 +1,37 @@
+name: import entire checkpoints
+
+# Cloud coding sessions can only push their own branch, so they cannot push
+# Entire's refs/entire/* checkpoint refs. A session commits them as a git
+# bundle on its branch instead, and this job pushes the refs from it.
+on:
+  workflow_dispatch:
+    inputs:
+      bundle:
+        description: Path of the git bundle on the selected branch
+        required: true
+        default: entire-checkpoints.bundle
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Push checkpoint refs from the bundle
+        env:
+          BUNDLE: ${{ inputs.bundle }}
+        run: |
+          git bundle verify "$BUNDLE"
+          refs=$(git bundle list-heads "$BUNDLE" | awk '{print $2}')
+          echo "$refs"
+          if echo "$refs" | grep -v '^refs/entire/'; then
+            echo "The bundle has refs outside refs/entire/; refusing to push." >&2
+            exit 1
+          fi
+          git fetch "$BUNDLE" 'refs/entire/*:refs/entire/*'
+          git push origin 'refs/entire/*'
+          git ls-remote origin 'refs/entire/*'

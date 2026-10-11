@@ -37,7 +37,7 @@ You are given an issue report and a checkout of the project at the commit where 
 
 If the bug does not reproduce on this machine after a genuine attempt, call give_up and explain what you tried. Never patch code without a reproduction.
 
-Keep the fix as small as the bug allows and match the surrounding code. Think about how Windows differs: path separators and drive letters, CRLF line endings and text-mode newline translation, file locking (an open file cannot be deleted or replaced), case-insensitive paths, the console encoding, MAX_PATH, process spawning and signals, and shell quoting.
+Keep the fix as small as the bug allows and match the surrounding code. Fix the root cause in the code path the project already uses: reuse its existing helpers and APIs instead of adding a new one or bypassing them, because callers and tests rely on those paths. Prefer one simple, consistent rule over special cases. If the bug comes from a rule that is wrong on Windows, correct the rule for every input it covers, rather than keeping the old behaviour for edge cases that no existing test or documentation asks for. Think about how Windows differs: path separators and drive letters, CRLF line endings and text-mode newline translation, file locking (an open file cannot be deleted or replaced), case-insensitive paths, the console encoding, MAX_PATH, process spawning and signals, and shell quoting.
 """
 
 

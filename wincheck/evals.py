@@ -256,6 +256,7 @@ def score(p: Project, b: Baseline) -> tuple[dict[str, str], list[str]]:
     return targets, regressions
 
 
+@tracing.span(kind="WORKFLOW", name="wincheck_eval", capture_input=False)
 def evaluate(case: Case, runs_root: Path, workdir: Path, baseline_only: bool = False,
              issue_file: Path | None = None, **agent_kwargs) -> dict:
     from .agent import Agent

@@ -107,6 +107,16 @@ def resolve_issue(case: Case) -> int:
     raise RuntimeError(f"could not find the issue for {case.name}; set it in CASES")
 
 
+# Reports written for cases whose upstream fix closes no issue (the PR text would give the fix away).
+# They describe only the symptom, and score.json marks them as issue_source "written".
+WRITTEN_ISSUES = Path(__file__).parent / "issues"
+
+
+def written_issue(case: Case) -> Path | None:
+    path = WRITTEN_ISSUES / f"{case.name}.md"
+    return path if not case.issue and path.exists() else None
+
+
 def issue_text(case: Case, number: int) -> str:
     issue = _gh(f"repos/{case.repo}/issues/{number}")
     return f"{case.repo}#{number}: {issue['title']}\n\n{issue.get('body') or ''}".strip()  # type: ignore[index]
@@ -227,6 +237,7 @@ class Score:
     baseline_note: str
     run_dir: str
     agent: dict = field(default_factory=dict)
+    issue_source: str = "github"
 
 
 @tracing.span(kind="TOOL", name="score", capture_input=False, tool_name="score")
@@ -245,6 +256,9 @@ def evaluate(case: Case, runs_root: Path, workdir: Path, baseline_only: bool = F
     stamp = time.strftime("%Y%m%d-%H%M%S")
     run_dir = (runs_root / case.name / stamp).resolve()
     run_dir.mkdir(parents=True, exist_ok=True)
+    source = "file" if issue_file else "github"
+    if not issue_file and (issue_file := written_issue(case)):
+        source = "written"
     if issue_file:
         number, text = case.issue or 0, issue_file.read_text(encoding="utf-8")
     else:
@@ -256,8 +270,8 @@ def evaluate(case: Case, runs_root: Path, workdir: Path, baseline_only: bool = F
     b = baseline(p, check_fix=baseline_only)
     (run_dir / "baseline.json").write_text(json.dumps(asdict(b), indent=2), encoding="utf-8")
     if baseline_only or not b.valid:
-        out = {"case": case.name, "issue": number, "baseline_valid": b.valid, "note": b.note, "targets": b.targets,
-               "run_dir": str(run_dir)}
+        out = {"case": case.name, "issue": number, "issue_source": source, "baseline_valid": b.valid, "note": b.note,
+               "targets": b.targets, "run_dir": str(run_dir)}
         (run_dir / "score.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
         return out
 
@@ -266,6 +280,6 @@ def evaluate(case: Case, runs_root: Path, workdir: Path, baseline_only: bool = F
     targets, regressions = score(p, b)
     passed = all(o == "PASSED" for o in targets.values()) and not regressions
     s = Score(case.name, case.split, number, passed, result.status, targets, regressions, b.note, str(run_dir),
-              {k: v for k, v in asdict(result).items() if k != "diff"})
+              {k: v for k, v in asdict(result).items() if k != "diff"}, source)
     (run_dir / "score.json").write_text(json.dumps(asdict(s), indent=2), encoding="utf-8")
     return asdict(s)

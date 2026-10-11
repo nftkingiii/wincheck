@@ -18,3 +18,6 @@ wincheck = "wincheck.cli:main"
 
 [tool.setuptools]
 packages = ["wincheck"]
+
+[tool.setuptools.package-data]
+wincheck = ["issues/*.md"]

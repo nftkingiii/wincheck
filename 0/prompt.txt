@@ -1,0 +1,12 @@
+Continue Wincheck for neatHack. Repo nftkingiii/wincheck, work on main's latest code. The user follows from a phone, so keep instructions short and step by step.
+
+Project: Wincheck is an agent that reproduces Windows-only Python bugs, fixes them and proves the fix with the maintainers' own tests. Hack: neatHack, submission Mon 2026-10-12 14:30-19:25 WAT. Partners: neatlogs (traces), Entire (checkpoints), cfo.ai (business plan). Results so far are in docs/evidence.md.
+
+Commit messages: natural wording, no conventional prefixes, no co-author trailer.
+
+Your one job in this session: create the project's first public Entire checkpoint.
+1. Install Entire: `GOBIN=$HOME/.local/bin go install github.com/entireio/cli/cmd/entire@v0.11.4` and the same for `.../cmd/git-remote-entire@v0.11.4`, then run `entire doctor --force`. Don't attach any earlier session.
+2. Run `entire configure --local --skip-push-sessions` so nothing is pushed yet. Email and phone redaction is already on in .entire/settings.json.
+3. Make one small, useful commit on a new branch: add a short "Results" section to README.md that links to docs/evidence.md and summarises the agent results listed there.
+4. Inspect the new checkpoint under refs/entire/checkpoints/ before pushing. Check every file for email addresses ("@" followed by a domain), phone numbers, API keys and personal details. Report counts only, and never print what you find. If anything is left, stop and tell the user.
+5. If it's clean, ask the user for a yes. Then remove push_sessions from .entire/settings.local.json, push the branch, open a PR, and give the user the checkpoint ID and link for the submission.

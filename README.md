@@ -1,5 +1,7 @@
 # Wincheck
 
+[![tests](https://github.com/nftkingiii/wincheck/actions/workflows/tests.yml/badge.svg)](https://github.com/nftkingiii/wincheck/actions/workflows/tests.yml)
+
 Wincheck is an agent that takes a Windows-specific bug report for a Python project, reproduces it on Windows, fixes it, and checks the fix. It won't change any code until it has a test that fails.
 
 ## How it works

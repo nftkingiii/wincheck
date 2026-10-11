@@ -19,6 +19,7 @@ What each claim rests on. Every entry links to something a reviewer can open.
 | 2026-10-11 | Checkpoint 01M4PDBKFPYB54GN93ZE6MKFWC: Try it yourself section | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 | 2026-10-11 | Checkpoint 01M4PEB0J3JVHJKH3M5MXKFBT9: harness test suite | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 | 2026-10-11 | Checkpoint 01M4PEBK08DQQS2AVDA33NEGC5: tests in CI on Windows and Linux | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
+| 2026-10-11 | Checkpoint 01M4PFMASFHS68B4H0V4QYVN9M: consistency runs | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 
 ## cfo.ai (business plan)
 | Date | What | Evidence |

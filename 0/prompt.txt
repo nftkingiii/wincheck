@@ -1,0 +1,13 @@
+New task: add a test suite and CI, so the harness's guarantees are proven in public. Restart claude/gifted-cerf-lirfct from the latest origin/main.
+1. tests/ with pytest, no network and no API key. Read wincheck/agent.py, tools.py, pytest_run.py, evals.py and mcp_server.py first, and test the real behaviour:
+Phase gates (tools.py Workspace): writing a non-test file in reproduce is refused; writing a test file in fix is refused; reads work in every phase; paths outside the workspace are refused.
+Secret scrubbing: scrub() removes every name in SECRET_VARS (case-insensitive) and keeps others.
+pytest_run.parse_summary: PASSED, FAILED with a " - reason", ERROR after PASS staying ERROR, SKIPPED ignored, Windows backslash ids normalized by PytestResult.outcome.
+evals._counted: an inner pytest's ..\tmp\...::test line isn't counted (the PR #8 bug), and exclude is respected.
+mcp_server._last_json: JSON followed by the neatlogs INFO line (skip this test if mcp isn't installed).
+End-to-end with a scripted fake Anthropic client: build a tiny project in tmp_path, with a function that joins paths with "/" and a test that expects os.sep. Drive Agent with a fake client that returns tool_use blocks in order: read the file, start_reproduction, write a failing test, submit_reproduction, fix the code, submit_fix. Assert status == "fixed", that the reproduction failed before and passes after, and that the transcript and fix.patch are written.
+Add three negative runs: a fake that tries to fix before reproducing (refused); one whose "reproduction" passes (rejected by the harness); and one that calls give_up (no patch).
+Match the client's real streaming and response shape as agent.py uses it; read it carefully rather than guessing.
+2. .github/workflows/tests.yml: run on push and pull_request, on a matrix of windows-latest and ubuntu-latest with Python 3.12. Use pip install -e ".[mcp]" pytest, then pytest -q. No secrets, and permissions: contents: read. Add a tests badge at the top of README.md.
+3. Run pytest -q locally until it's green. Then commit the tests and the workflow separately, with natural messages and no co-author trailer. Bundle only the new checkpoints, scan them as before, push and open a PR. Don't merge.
+Reply with the PR link, the test count and results, the checkpoint IDs and the scan counts. If any test reveals a real bug in the harness, stop and report it instead of changing the test to pass.

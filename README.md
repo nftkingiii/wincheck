@@ -20,7 +20,7 @@ If the bug doesn't reproduce, the agent calls `give_up` and makes no patch. If a
 
 ## Evals
 
-Each eval case is a real Windows bug that was fixed upstream. It is replayed from the commit before the fix (`<fix>^`). The agent sees only the issue text and that checkout. Scoring uses the maintainers' own test from the fix commit: the target tests must fail before the agent runs and pass after it, and no other test in those files may start failing.
+Each eval case is a real Windows bug that was fixed upstream. It is replayed from the commit before the fix (`<fix>^`). The agent sees only the issue text and that checkout. Two upstream fixes close no issue (`tox-str-convert`, `build-env`), so their issue text is a short symptom-only report in `wincheck/issues/`, and `score.json` records `issue_source: written`. Scoring uses the maintainers' own test from the fix commit: the target tests must fail before the agent runs and pass after it, and no other test in those files may start failing.
 
 ```
 python -m wincheck cases

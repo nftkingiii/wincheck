@@ -31,6 +31,21 @@ python -m wincheck run --repo PATH --issue-file ISSUE.md --python PATH\to\venv\p
 
 Each run writes `runs/<case>/<time>/` with `issue.md`, `baseline.json`, `transcript.jsonl`, `fix.patch`, `result.json` and `score.json`.
 
+## Results
+
+Latest agent run for each case on `windows-latest`. Every run, with links to its Actions log, is in [docs/evidence.md](docs/evidence.md).
+
+| Case | Held out | Result |
+|---|---|---|
+| click-3277 | no | passed |
+| tox-3222 | no | failed: 1 of 6 targets (kept an escape rule upstream changed) |
+| click-tempfile-pager | yes | passed |
+| pytest-pathlib | yes | passed (66 s, 9 turns) |
+| build-env | yes | passed (347 s) |
+| tox-str-convert | yes | failed: 18 of 20 targets, 2 regressions |
+
+4 of 6 cases pass, including 3 of the 4 held-out ones.
+
 ## Windows runner
 
 The runs happen on GitHub Actions `windows-latest` (`.github/workflows/wincheck.yml`). The workflow can only be started by hand. Its API keys come from repository secrets (`ANTHROPIC_API_KEY`, `NEATLOGS_API_KEY`), and the run directory is uploaded as an artifact.

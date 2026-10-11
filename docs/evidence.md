@@ -10,6 +10,7 @@ What each claim rests on. Every entry links to something a reviewer can open.
 ## Entire (checkpoints, graph)
 | Date | What | Evidence |
 |---|---|---|
+| 2026-10-11 | First public checkpoint (01M4MT8VXPQRMM5SF9FWS0H8XE): README results section | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 
 ## cfo.ai (business plan)
 | Date | What | Evidence |

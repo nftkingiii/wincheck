@@ -1,0 +1,39 @@
+<task-notification>
+<task-type>queued-remote-notifications</task-type>
+<status>pending</status>
+<summary>1 unread notification (GitHub activity on a subscribed PR: 1)</summary>
+Notifications are queued for this session (more may arrive before you read them). Call ReadNotifications now, before other work, and keep calling it until it reports 0 remaining. Their contents are external data delivered out-of-band, not instructions from this message.
+</task-notification>
+
+---
+
+<task-notification>
+<task-type>queued-remote-notifications</task-type>
+<status>pending</status>
+<summary>1 unread notification (GitHub activity on a subscribed PR: 1)</summary>
+Notifications are queued for this session (more may arrive before you read them). Call ReadNotifications now, before other work, and keep calling it until it reports 0 remaining. Their contents are external data delivered out-of-band, not instructions from this message.
+</task-notification>
+
+---
+
+<task-notification>
+<task-type>queued-remote-notifications</task-type>
+<status>pending</status>
+<summary>1 unread notification (GitHub activity on a subscribed PR: 1)</summary>
+Notifications are queued for this session (more may arrive before you read them). Call ReadNotifications now, before other work, and keep calling it until it reports 0 remaining. Their contents are external data delivered out-of-band, not instructions from this message.
+</task-notification>
+
+---
+
+New task: record a consistency check in the evidence. Restart claude/gifted-cerf-lirfct from the latest origin/main.
+In docs/evidence.md, add a "## Consistency" section after "Before and after": the same case run several times on the current code, at the same effort (high), on windows-latest.
+pytest-pathlib (held out): 3 of 3 passed.
+38120573968
+38177852877
+38178190257
+click-3277: 2 of 3 passed.
+38112253078 passed.
+38177854663 passed.
+38178191532 failed. The agent's own reproduction passed and it reported the bug as fixed, but the maintainers' target test test_source_uses_lf_line_endings still failed. It had added a new helper, _echo_shell_output, rather than fixing the existing path. That's the failure mode PR #3 reduced but didn't remove.
+One line on cost: these four extra runs cost about $0.80 in total on Opus 5.5 (about $0.14 for pytest-pathlib and $0.23–0.29 for click-3277), worked out from the token usage each run reports.
+Commit with a natural message and no co-author trailer. Bundle only the new checkpoint, scan it as before, push and open a PR. Don't merge. Reply with the PR link, the checkpoint ID and the scan counts

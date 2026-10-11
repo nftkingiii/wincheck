@@ -14,6 +14,7 @@ What each claim rests on. Every entry links to something a reviewer can open.
 | 2026-10-11 | First public checkpoint (01M4MT8VXPQRMM5SF9FWS0H8XE): README results section | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 | 2026-10-11 | Checkpoint 01M4MVMWV80NVTQG1FRX2K6YCB: README Partner tools section | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 | 2026-10-11 | Checkpoint 01M4MW81P89C81Z8V9TPERQMZH: one neatlogs trace per eval run | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
+| 2026-10-11 | Checkpoint 01M4NY9M8KY269DEEQSYES5J4Q: before-and-after and failed-action evidence | [session](https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a) |
 
 ## cfo.ai (business plan)
 | Date | What | Evidence |
@@ -39,3 +40,31 @@ What each claim rests on. Every entry links to something a reviewer can open.
 | 2026-10-11 | tox-str-convert agent (held out, written bug report) | [failed: 18/20 targets (single-quoted UNC paths still collapse) and 2 regressions (UNC paths quoted mid-argument)](https://github.com/nftkingiii/wincheck/actions/runs/38117085629) |
 | 2026-10-11 | build-env agent (held out, written bug report) | [**passed**, agent time 347 s](https://github.com/nftkingiii/wincheck/actions/runs/38117086919) |
 | 2026-10-11 | pytest-pathlib agent (held out), re-run with one trace per run | [**passed**](https://github.com/nftkingiii/wincheck/actions/runs/38120573968) |
+
+## Before and after
+Two click-3277 agent runs on the same bug. Between them, PR #3 steered the agent toward root-cause fixes that go through existing code paths.
+
+| | Before PR #3 | After PR #3 |
+|---|---|---|
+| Run | [38110138668](https://github.com/nftkingiii/wincheck/actions/runs/38110138668) | [38112253078](https://github.com/nftkingiii/wincheck/actions/runs/38112253078) |
+| Result | failed | **passed** |
+| What the agent did | fixed the symptom with a new `_echo_lf` helper that bypassed `click.echo` | fixed it inside the existing code path: the output, trailing newline included, is encoded with the stream's encoding (`get_best_encoding(_default_text_stdout())`) and written as bytes through the existing `echo()`, which skips Windows newline translation. No new helper, and `click.echo` isn't bypassed |
+| Turns | 14 | 17 |
+| Agent time | 88.3 s | 81.1 s |
+| Output tokens | 5,391 | 6,278 |
+
+neatlogs tracing, before and after PR #13:
+
+| | Before PR #13 | After PR #13 |
+|---|---|---|
+| Traces per eval run | 4 separate traces (prepare_project, baseline, wincheck_run, score) | 1 `wincheck_eval` trace with everything nested inside it |
+| Run | [38117085629](https://github.com/nftkingiii/wincheck/actions/runs/38117085629) (tox-str-convert) | [38120573968](https://github.com/nftkingiii/wincheck/actions/runs/38120573968) |
+
+## A failed action and what the agent did next
+From the tox-str-convert run ([38117085629](https://github.com/nftkingiii/wincheck/actions/runs/38117085629); the run's artifact has `transcript.jsonl`):
+
+1. The agent ran `pytest tests/config`. Collection crashed with `ModuleNotFoundError: No module named 'argcomplete'`.
+2. On the next turn it re-ran with `--ignore=tests/config/cli/test_argcomplete.py`.
+3. That run showed failures in `test_cli_ini.py`. The agent ran `git stash` on its change and re-ran those tests, to check whether the failures were there before its fix.
+
+A failure at the harness level: the first pytest-pathlib run ([38117084071](https://github.com/nftkingiii/wincheck/actions/runs/38117084071)) was rejected by the baseline gate before any model call, because the harness counted an inner pytest's temp-dir test as a second target. PR #8 fixed the target count, and the next run [passed](https://github.com/nftkingiii/wincheck/actions/runs/38117351420).

@@ -1,0 +1,8 @@
+Next task. PR [#10](https://github.com/nftkingiii/wincheck/pull/10) is merged, so restart your branch `claude/gifted-cerf-lirfct` from the latest `origin/main` (force-push is fine, it only had merged work).
+Add a short “Partner tools” section to README.md right after “Results”, with three bullets, each linking to its evidence:
+
+* neatlogs: every run is one trace (the run is a workflow span, each phase an agent span, each tool call and harness check a tool span, and the Anthropic calls are instrumented). Link to docs/evidence.md.
+* Entire: commits carry `Entire-Checkpoint` trailers; first public checkpoint `01M4MT8VXPQRMM5SF9FWS0H8XE` with link https://entire.io/gh/nftkingiii/wincheck/session/06c56b38-4221-5994-b5c1-a8a55c86ae0a. Cloud sessions can’t push `refs/entire/*`, so .github/workflows/entire-import.yml publishes checkpoints from a git bundle.
+* cfo.ai: a 12-month plan built from measured run costs. $49 per fix and a $199/month team plan both clear a 70% margin, and 23 paying repos cover founder pay. Link to docs/business/wincheck-financial-plan.pdf and docs/business/wincheck-12-month-plan.xlsx.
+
+Commit it with a natural message and no co-author trailer. Then bundle only that commit’s new checkpoint ref as `entire-checkpoints.bundle`. Scan it like last time and report counts only. Commit just the bundle in a second commit, push, and open a PR. Don’t merge it. Reply with the PR link, the new checkpoint ID and the scan counts.

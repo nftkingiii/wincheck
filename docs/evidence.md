@@ -86,6 +86,16 @@ From the tox-str-convert run ([38117085629](https://github.com/nftkingiii/winche
 
 A failure at the harness level: the first pytest-pathlib run ([38117084071](https://github.com/nftkingiii/wincheck/actions/runs/38117084071)) was rejected by the baseline gate before any model call, because the harness counted an inner pytest's temp-dir test as a second target. PR #8 fixed the target count, and the next run [passed](https://github.com/nftkingiii/wincheck/actions/runs/38117351420).
 
+## Incidents found with neatlogs
+
+neatlogs has no open incidents for this project. These are the problems it surfaced while we built Wincheck, and what we did about each.
+
+| Incident (how neatlogs showed it) | Cause | Resolution |
+|---|---|---|
+| One eval run appeared as 4 separate traces in the traces list | `evaluate()` had no span of its own | PR #13: one `wincheck_eval` trace per run ([run 38120573968](https://github.com/nftkingiii/wincheck/actions/runs/38120573968)) |
+| "Slow Project Preparation" detection on every eval run (`prepare_project` 34.7 s on [run 38120573968](https://github.com/nftkingiii/wincheck/actions/runs/38120573968)) | pip resolving and installing the project under test | Install with uv, pip as fallback. Time outside the agent on pytest-pathlib went from about 50 s ([run 38177852877](https://github.com/nftkingiii/wincheck/actions/runs/38177852877)) to about 34 s ([run 38208091235](https://github.com/nftkingiii/wincheck/actions/runs/38208091235)), and the case still passes |
+| "Execution Failed" detections with the failing tool call in red, e.g. "Nothing can be written while reading the issue. Call start_reproduction first." | The harness tests' scripted model breaking the phase rules on purpose | Expected: the gates refused every out-of-phase write, and neatlogs flagged each refusal |
+
 ## Harness tests
 27 tests in `tests/`, with no network and no API key. CI runs them on windows-latest and ubuntu-latest ([run 38177162062](https://github.com/nftkingiii/wincheck/actions/runs/38177162062)).
 

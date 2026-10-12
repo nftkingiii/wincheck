@@ -148,8 +148,7 @@ def prepare(case: Case, workdir: Path) -> Project:
     git(src, "config", "user.name", "wincheck")
     _run([sys.executable, "-m", "venv", str(venv)], base)
     py = venv_python(venv)
-    _run([py, "-m", "pip", "install", "--quiet", "--upgrade", "pip>=25.1"], src, scrub(os.environ.copy()))
-    _run([py, "-m", "pip", "install", "--quiet", *case.install], src, scrub(os.environ.copy()))
+    install_deps(py, src, case.install)
     env = scrub(os.environ.copy())
     env.pop("PYTHONPATH", None)
     env["VIRTUAL_ENV"] = str(venv)
@@ -159,6 +158,25 @@ def prepare(case: Case, workdir: Path) -> Project:
         if is_test_path(f) and f.endswith(".py")
     ]
     return Project(case, src, py, env, files)
+
+
+def install_deps(py: str, src: Path, install: tuple[str, ...]) -> None:
+    """Install the project under test into its venv.
+
+    neatlogs flagged every eval run with "Slow Project Preparation": pip spent
+    most of prepare_project resolving and installing. uv does the same install
+    much faster, so use it when it is on PATH and fall back to pip otherwise.
+    """
+    env = scrub(os.environ.copy())
+    uv = shutil.which("uv")
+    if uv and not os.environ.get("WINCHECK_NO_UV"):
+        try:
+            _run([uv, "pip", "install", "--python", py, "--quiet", *install], src, env)
+            return
+        except subprocess.CalledProcessError:
+            print("[wincheck] uv install failed; falling back to pip", flush=True)
+    _run([py, "-m", "pip", "install", "--quiet", "--upgrade", "pip>=25.1"], src, env)
+    _run([py, "-m", "pip", "install", "--quiet", *install], src, env)
 
 
 def _force_remove(func, path, _exc):

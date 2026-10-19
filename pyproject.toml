@@ -10,7 +10,10 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "anthropic>=1.13",
-    "neatlogs>=1.4.26",
+    # Pinned to the neatlogs commit that records tokens for messages.stream() helpers
+    # (neatlogs/neatlogs#218). 1.4.27 on PyPI leaves them at 0. Go back to a version
+    # range once a release includes it.
+    "neatlogs @ git+https://github.com/neatlogs/neatlogs@03fd3c4f26b1e2fb2a126160e5cc5b97e35828e1",
 ]
 
 [project.optional-dependencies]
